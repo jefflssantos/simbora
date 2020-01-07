@@ -9,11 +9,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.4.1/darkly/bootstrap.min.css">
 
     <title>Simbora!</title>
+
+    <style>
+      .form-control {
+        border-radius: 0;
+        padding: 1.5rem 1rem;
+        font-size: 1.3rem;
+        font-weight: bold;
+      }
+
+      h1 {
+        font-weight: bolder;
+      }
+    </style>
   </head>
   <body>
     <div class="container pt-5">
     	<div class="row">
-    		<div class="col-12 col-lg-4">
+    		<div class="col-12 col-md-4">
     			<div class="card">
     				<div class="card-body">
     					<form action="/">
@@ -37,12 +50,27 @@
     				</div>
     			</div>
     		</div>
-    		<div class="col-12 col-lg-8">
-    			<h1 id="u-can-leave-at">00:00</h1>
-          <h1 id="u-can-leave-at-with-bank">00:00</h1>
+    		<div class="col-12 col-md-8">
+          <div class="card">
+            <div class="card-body d-flex justify-content-between d-md-block">
+              <div class="mb-md-4">
+                <p class="mb-0">Saída normal</p>
+                <h1 id="u-can-leave-at">00:00</h1>
+              </div>
+              
+              <div>
+                <p class="mb-0">Saída com banco</p>
+                <h1 id="u-can-leave-at-with-bank">00:00</h1>
+              </div>
+            </div>
+            <div class="card-footer text-center">
+              © Jefferson Santos - email@jeffsantos.com.br
+            </div>
+          </div>
     		</div>
     	</div>
     </div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -58,17 +86,18 @@
         let dailyWorkload = moment($('#daily-workload').val(), 'hh:mm')
         let lunchBreak = moment($('#lunch-break').val(), 'hh:mm')
         let startTime = moment($('#start-time').val(), 'hh:mm')
-        let leaveTime = startTime
-          .add(dailyWorkload.format('hh'), 'hours')
-          .add(dailyWorkload.format('mm'), 'minutes')
-          .add(lunchBreak.format('hh'), 'hours')
-          .add(lunchBreak.format('mm'), 'minutes')
+        let leaveTime = startTime.clone()
 
-        let leaveTimeWithBank = leaveTime.clone()
-        
+        leaveTime
+          .add(dailyWorkload.format('hh'), 'hours').add(dailyWorkload.format('mm'), 'minutes')
+          .add(lunchBreak.format('hh'), 'hours').add(lunchBreak.format('mm'), 'minutes')
+
+        let leaveTimeWithBank = startTime.clone()
+
         leaveTimeWithBank
-          .add(bankHours.format('hh'), 'hours')
-          .add(bankHours.format('mm'), 'minutes')
+          .add(dailyWorkload.format('hh'), 'hours').add(dailyWorkload.format('mm'), 'minutes')
+          .add(1, 'hours')
+          .add(bankHours.format('hh'), 'hours').add(bankHours.format('mm'), 'minutes')
 
         $('#u-can-leave-at').text(leaveTime.format('HH:mm'))
         $('#u-can-leave-at-with-bank').text(leaveTimeWithBank.format('HH:mm'))
